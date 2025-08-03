@@ -1,0 +1,80 @@
+<odoo>
+<record id='property_report' model='ir.actions.report'>
+<field name='name'>Property Report</field>
+<field name='model'>property</field>
+<field name='report_type'>qweb-pdf</field>
+<field name='binding_model_id' ref='model_property'/>
+<field name='binding_type'>report</field>
+<field name='report_name'>app_one.property_report_template</field>
+
+</record>
+<template id="property_report_template"  >
+    <t t-call='web.html_container'>
+   <t t-foreach='docs' t-as='o'>
+   <h1 style="text-align:center; font-size:22px;"> property Report</h1>
+    <style>
+                        .property-table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 20px;
+                        }
+                        .property-table th {
+                            background-color: #f0f0f0;
+                            padding: 8px;
+                            font-weight: bold;
+                            border: 1px solid #ccc;
+                            text-align: left;
+                        }
+                        .property-table td {
+                            padding: 8px;
+                            border: 1px solid #ccc;
+                        }
+                        .property-table tr:nth-child(even) {
+                            background-color: #f9f9f9;
+                        }
+                    </style>
+   <table class="property-table" style="text-align:center; font-size:22px;">
+        <thead>
+        <th colspan="4" style="text-align:center; font-size:22px;">General Information</th>
+        </thead>
+        <tbody>
+            <td>Property Name</td>
+            <td><t t-esc="o.name"/></td>
+            <td>Property postcode</td>
+            <td><t t-esc="o.postcode"/></td>
+         </tbody>
+        <thead>
+        <th colspan="4" style="text-align:center; font-size:22px;">additional Information</th>
+        </thead>
+        <tbody>
+            <td>Owner Name</td>
+            <td><t t-esc="o.owner_id.name"/></td>
+            <td>Owner Phone</td>
+            <td><t t-esc="o.owner_phone"/></td>
+         </tbody>
+   </table>
+   <br/>
+   <table class="property-table" style="text-align:center; font-size:22px;">
+
+   <t t-foreach='o.line_ids' t-as='line'>
+    <thead>
+    <th  style="text-align:center; font-size:22px;">Description </th>
+    <th  style="text-align:center; font-size:22px;">Area(m2) </th>
+    </thead>
+    <tbody>
+    <td><span t-field="line.description"/></td>
+    <td><t t-esc="line.area"/></td>
+
+    </tbody>
+   </t>
+
+   </table>
+
+   
+    </t>
+    </t>
+</template>
+
+
+
+</odoo>

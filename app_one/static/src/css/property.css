@@ -1,0 +1,33 @@
+.header_custom table{
+    border-collapse: collapse;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+.header_custom table thead tr th{
+    background-color: #07668d !important;
+    color: white !important;
+    text-align: center !important;
+}
+.header_custom table thead tr th:nth-child(2){
+    width: 100px !important;
+}
+.header_custom table thead th {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+.header_custom table tbody td {
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid #ddd;
+}
+.header_custom table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.header_custom table tbody tr:hover {
+    background-color: #e0e7ff;
+    transition: 0.3s;
+}
