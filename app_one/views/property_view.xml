@@ -43,7 +43,7 @@
 <header>
 <button name="action" type="object" class="btn-primary" string="ACTION"/>
 <button name="action_draft" type="object" class="btn-primary" string="Set To Draft"
-invisible="not status in ('pending','sold')"/>
+invisible=" status in ('draft','closed')"/>
 <button name="action_pending" type="object" class="btn-primary" string=" Pending"
 invisible="not status in ('draft','sold')"/>
 <button name="action_sold" type="object" class="btn-primary" string="Sold"
@@ -55,35 +55,35 @@ invisible="not status in ('draft','pending')"/>
             <h1>
                     <field name="ref"/>
             </h1>
-            <lable for='name'/>
+            <lable for='name' />
             <h3>
-                    <field name="name"/>
+                    <field name="name" readonly="status=='closed'"/>
             </h3>
         </div>
 <group>
     <group string='General info'>
-                <field name="date_availability" />
-                <field name="expected_selling_date" />
-                <field name="is_late"  invisible="1"/>
-                <field name="expected_price" />
-                <field name="selling_price"/>
-                <field name="diff"/>
-                <field name="garden"/>
-                <field name="living_area"/>
-                <field name="facades"/>
+                <field name="date_availability" readonly="status=='closed'" />
+                <field name="expected_selling_date" readonly="status=='closed'"/>
+                <field name="is_late"  invisible="1" readonly="status=='closed'"/>
+                <field name="expected_price" readonly="status=='closed'" />
+                <field name="selling_price" readonly="status=='closed'"/>
+                <field name="diff" readonly="status=='closed'"/>
+                <field name="garden" readonly="status=='closed'"/>
+                <field name="living_area" readonly="status=='closed'"/>
+                <field name="facades" readonly="status=='closed'"/>
                 </group>
                 <group string='Additional info' >
-                <field name="owner_id"/>
-                <field name="owner_phone"/>
-                <field name="owner_adress"/>
-                <field name="postcode"/>
+                <field name="owner_id" readonly="status=='closed'"/>
+                <field name="owner_phone" readonly="status=='closed'"/>
+                <field name="owner_adress" readonly="status=='closed'"/>
+                <field name="postcode" readonly="status=='closed'"/>
 
                 <field name="status"/>
-                <field name="bedrooms" optional='1'/>
-                <field name="garden_area" optional='1'/>
-                <field name="garage"/>
-                <field name="garden_orientation"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="bedrooms" optional='1' readonly="status=='closed'"/>
+                <field name="garden_area" optional='1' readonly="status=='closed'"/>
+                <field name="garage" readonly="status=='closed'"/>
+                <field name="garden_orientation" readonly="status=='closed'"/>
+                <field name="tag_ids" widget="many2many_tags" readonly="status=='closed'"/>
                 <field name="active"/>
                 </group>
     <group>
@@ -91,8 +91,8 @@ invisible="not status in ('draft','pending')"/>
     </group>
 
     <notebook>
-        <page string="Bedrooms">
-           <field name="line_ids">
+        <page string="Bedrooms" >
+           <field name="line_ids" >
             <tree editable="bottom">
                 <field name="description"/>
                 <field name="area"/>
