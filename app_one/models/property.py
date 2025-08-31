@@ -10,6 +10,7 @@ class Property(models.Model):
 
 
     name= fields.Char(required=True)
+    ref= fields.Char(default='New',readonly=1)
     description= fields.Text(tracking=1)
     postcode= fields.Char(required=True)
     date_availability= fields.Date(tracking=1)
@@ -18,6 +19,7 @@ class Property(models.Model):
     expected_price= fields.Float()
     selling_price= fields.Float()
     diff= fields.Float(compute='_compute_diff',store=1)
+    # difff=fields.float(compute='_compute_diff_to',store=1)
     bedrooms= fields.Integer()
     living_area= fields.Integer()
     facades= fields.Integer()
@@ -50,6 +52,14 @@ class Property(models.Model):
     _sql_constraints =[
         ('unique_name','unique(name)','Name must be unique'),
     ]
+    # @api.depends('expected_price','selling_price')
+    # def _compute_diff_to(self):
+    #     for rec in self:
+    #         rec.difff=rec.expected_price-rec.selling_price
+
+    # @api.onchange()
+    
+
     @api.constrains('bedrooms')
     def _check_bedrooms_greater_than_zero(self):
      for record in self:
@@ -116,6 +126,24 @@ class Property(models.Model):
         #     self.selling_price=self.expected_price
         return { 'warning':{ 'title': 'warning' , 'message':'negative value' ,'type':'notification' }
             }
+
+
+    def action(self):
+        print('dada')
+
+    @api.model
+    def create(self,vals):
+        res = super(Property , self ).create(vals)
+        if res.ref == 'New':
+            res.ref = self.env['ir.sequence'].next_by_code('property_seq')
+        return res    
+
+    # @api.model
+    # def create(self, vals):
+    #     res = super(Property, self).create(vals)
+    #     if res.ref == 'NEW':
+    #         res.ref = self.env['ir.sequence'].next_by_code('property_seq')
+    #     return res
 
 class PropertyLine(models.Model):
     _name='property.line'
