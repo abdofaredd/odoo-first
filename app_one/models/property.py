@@ -1,5 +1,4 @@
-from dataclasses import Field
-from difflib import diff_bytes
+
 from odoo import models,fields,api
 from odoo.exceptions import ValidationError
 
@@ -65,12 +64,12 @@ class Property(models.Model):
      for record in self:
         if record.bedrooms == 0:
             raise ValidationError("Bedrooms must be greater than 0")
-    @api.model_create_multi
-    def create( self , vals ):
-        res=super( Property , self ).create( vals )
-        # res=super().create(Self,vals) 
-        print('inside create method')
-        return res
+    # @api.model_create_multi
+    # def create( self , vals ):
+    #     res=super( Property , self ).create( vals )
+    #     # res=super().create(Self,vals) 
+    #     print('inside create method')
+    #     return res
     # @api.model
     # def _search(self, domain, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
     #     res=super( Property , self )._search( domain, offset=0, limit=None, order=None, count=False, access_rights_uid=None )
@@ -149,15 +148,22 @@ class Property(models.Model):
     #     return res
 
 
-    def property_history_record(self,old_state, new_state):
+    def property_history_record(self,old_state, new_state,reason):
         for rec in self:
             rec.env['property.history'].create({
                 'user_id':rec.env.uid,
                 'property_id':rec.id,
                 'old_state':old_state,
                 'new_state':new_state,
+                'reason':reason or "",
 
             })
+
+    
+    def action_open_change_state_wizard(self):
+        action=self.env['ir.actions.actions']._for_xml_id('app_one.change_state_wizard_action')
+        action['context']={'default_property_id':self.id}
+        return action
 
 class PropertyLine(models.Model):
     _name='property.line'

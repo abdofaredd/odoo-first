@@ -42,8 +42,7 @@
 
 <header>
 <button name="action" type="object" class="btn-primary" string="ACTION"/>
-<button name="action_draft" type="object" class="btn-primary" string="Set To Draft"
-invisible=" status in ('draft','closed')"/>
+<button name="action_draft" type="object" class="btn-primary" string="Set To Draft" invisible="status in ('draft','closed')"/>
 <button name="action_pending" type="object" class="btn-primary" string=" Pending"
 invisible="not status in ('draft','sold')"/>
 <button name="action_sold" type="object" class="btn-primary" string="Sold"
@@ -124,6 +123,15 @@ invisible="not status in ('draft','pending')"/>
     <field name="state">code</field>
     <field name="code">
         action=records.action_closed()
+    </field>
+</record>
+<record id="property_change_state_server_action" model="ir.actions.server">
+    <field name="name">Change State</field>
+    <field name="model_id" ref='model_property'/>
+    <field name="binding_model_id" ref='model_property'/>
+    <field name="state">code</field>
+    <field name="code">
+        action=records.action_open_change_state_wizard()
     </field>
 </record>
 
