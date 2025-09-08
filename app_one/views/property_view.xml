@@ -61,6 +61,8 @@ invisible="not status in ('draft','pending')"/>
         </div>
 <group>
     <group string='General info'>
+                <field name="create_time" readonly="1"   />
+                <field name="next_time" />
                 <field name="date_availability" readonly="status=='closed'" />
                 <field name="expected_selling_date" readonly="status=='closed'"/>
                 <field name="is_late"  invisible="1" readonly="status=='closed'"/>

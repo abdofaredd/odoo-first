@@ -1,7 +1,7 @@
 
 from odoo import models,fields,api
 from odoo.exceptions import ValidationError
-
+from datetime import timedelta 
 class Property(models.Model):
     _name='property'
     _description='Property '
@@ -40,6 +40,8 @@ class Property(models.Model):
     owner_phone=fields.Char(related='owner_id.phone',readonly=0)
     owner_adress=fields.Char(related='owner_id.address',readonly=0)
     active=fields.Boolean(default=True)
+    create_time=fields.Datetime(default=fields.Datetime.now())
+    next_time =fields.Datetime(compute="_compute_next_time")
 
     status=fields.Selection([
         ('draft','Draft'),
@@ -58,6 +60,14 @@ class Property(models.Model):
 
     # @api.onchange()
     
+    @api.depends('create_time')
+    def _compute_next_time(self):
+        for rec in self:
+            if rec.create_time:
+               rec.next_time =rec.create_time + timedelta(hours=6)
+            else:   
+                   rec.next_time=False     
+
 
     @api.constrains('bedrooms')
     def _check_bedrooms_greater_than_zero(self):
@@ -148,14 +158,15 @@ class Property(models.Model):
     #     return res
 
 
-    def property_history_record(self,old_state, new_state,reason):
+    def property_history_record(self , old_state , new_state ,reason=""):
         for rec in self:
             rec.env['property.history'].create({
                 'user_id':rec.env.uid,
                 'property_id':rec.id,
                 'old_state':old_state,
                 'new_state':new_state,
-                'reason':reason or "",
+                'reason': reason or "",
+                'line_ids': [( 0 , 0 , {'description':line.description,'area':line.area} ) for line in rec.line_ids ],
 
             })
 

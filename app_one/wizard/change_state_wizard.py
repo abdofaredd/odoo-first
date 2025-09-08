@@ -14,9 +14,10 @@ class changeState(models.TransientModel):
     ], default='draft')
 
 
+
     def action_confirm(self):
-       if self.property_id.state == 'closed':
-            self.property_id.state=self.state
+       if self.property_id.status == 'closed':
+            self.property_id.status =self.state
             self.property_id.property_history_record('closed',self.state,self.reason)
         # action=self.env['ir.actions.actions'].for_xml_id('app_one.change_state_wizard_action')
         # action['context']={
