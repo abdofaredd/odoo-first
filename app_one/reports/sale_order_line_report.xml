@@ -30,10 +30,6 @@
                             }
                         </style>
 
-
-
-                
-
                         <div class="page mt-0" style="direction: rtl;">
                                 <div class="d-flex justify-content-between">
                                             <div style="width:80%; text-align:right; line-height:1.6;">
@@ -126,20 +122,17 @@
                                 </table>
                             </div>
 
-                    <div style="margin-top:80px; width:100%;">
+                    <div class='footer w-100'>
                         <!-- الخط الفاصل -->
                         <hr style="border: 1px solid #000; margin-bottom:10px;"/>
 
                         <!-- الفوتر -->
-                        <footer>
+                        <div >
                             <h5 style="text-align:center; margin-top:10px;">
                                 <p style="text-align:center;">  .شكراً لأختياركم شركة طلبات المستقبل ،ونسعد دائما بخدمتكم </p>
                             </h5>
-                        </footer>
-                    </div>
-
-
-
+                            </div>
+                         </div>
                         </div>
                     </t>
                 </t>
