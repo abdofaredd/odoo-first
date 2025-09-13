@@ -2,7 +2,7 @@
     <data>
         <!-- Action report -->
         <record id="action_report_saleorder_line_custom_extra" model="ir.actions.report">
-            <field name="name">تقرير سطور طلب المبيعات </field>
+            <field name="name">تقرير طلب المبيعات </field>
             <field name="model">sale.order</field>
             <field name="report_type">qweb-pdf</field>
             <field name="binding_model_id" ref="sale.model_sale_order"/>
@@ -69,59 +69,76 @@
                                 </div>
                             </div>
 
-                            <table style="width:100%; font-size:13px;">
-                                <thead style="background-color:#34495e; color:#fff;">
+                            <table style="width:100%; font-size:13px; text-align:right;">
+                                <thead style="  text-align:right; ">
                                     <tr>
-                                        <th>اسم المنتج</th>
+                                        <th style="text-align:right;">اسم المنتج</th>
                                         <!-- <th>الوصف</th> -->
-                                        <th>الكمية</th>
-                                        <th>سعر الوحدة</th>
-                                        <th>الخصم</th>
-                                        <th>الإجمالي قبل الضريبة</th>
-                                        <th>اجمالي الضريبة</th>
-                                        <th>الإجمالي</th>
+                                        <th style="text-align:right;">الكمية</th>
+                                        <th style="text-align:right;">سعر الوحدة</th>
+                                        <th style="text-align:right;">الخصم</th>
+                                        <th style="text-align:right;">الإجمالي قبل الضريبة</th>
+                                        <th style="text-align:right;">اجمالي الضريبة</th>
+                                        <th style="text-align:right;">الإجمالي</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <t t-foreach="doc.order_line" t-as="l">
                                         <tr>
-                                            <td><span t-field="l.extera_Info"/></td>
+                                            <td style="text-align:right;"><span t-field="l.extera_Info"/></td>
                                             <!-- <td><span t-field="l.name"/></td> -->
-                                            <td><span t-esc="l.product_uom_qty"/></td>
-                                            <td><span t-esc="l.price_unit"/></td>
-                                            <td><span t-field="l.tax_id"/></td>
-                                            <td><span t-esc="l.price_subtotal"/></td>
-                                            <td><span t-esc="l.price_total - l.price_subtotal"/></td>
-                                            <td><span t-esc="l.price_total"/></td>
+                                            <td style="text-align:right;"><span t-esc="l.product_uom_qty"/></td>
+                                            <td style="text-align:right;"><span t-esc="l.price_unit"/></td>
+                                            <td style="text-align:right;"><span t-field="l.tax_id"/></td>
+                                            <td style="text-align:right;"><span t-esc="l.price_subtotal"/></td>
+                                                                            <!-- <td style="text-align:right;"><span t-esc="formatLang(l.price_total - l.price_subtotal, digits=2)"/></td> -->
+                                            <td style="text-align:right;">
+                                                        <span t-esc="l.price_total - l.price_subtotal" t-options='{"widget": "float", "precision": 2}'/>
+                                            </td>
+                                            <td style="text-align:right;"><span t-esc="l.price_total"/></td>
                                         </tr>
                                     </t>
                                     <tr>
                                     <td colspan='4'></td>
-                                    <td><span t-esc="doc.amount_untaxed"/></td>
+                                    <td style="text-align:right;"><span t-esc="doc.amount_untaxed"/></td>
                                     <td></td>
-                                    <td><span t-esc="doc.amount_total"/></td>
+                                    <td style="text-align:right;"><span t-esc="doc.amount_total"/></td>
                                     </tr>
                                 </tbody>
                             </table>
 
-                            <div style="width:100%; display:flex; justify-content:flex-end; margin-top:20px;">
-                                <table style="width:100%; font-size:13px;">
-                                    <tbody>
+                            <div style="width:100%; display:flex; justify-content:flex-end; margin-top:20px; text-align:right;  ">
+                                <table style="width:100%; font-size:13px; text-align:right; ">
+                                    <tbody style="text-align:right;">
                                         <tr>
-                                            <td>الإجمالي بدون ضريبة</td>
+                                            <td style="text-align:right;">الإجمالي بدون ضريبة</td>
                                             <td style="text-align:right; background-color:#ecf0f1;"><span t-esc="doc.amount_untaxed"/></td>
                                         </tr>
                                         <tr>
-                                            <td>إجمالي الضريبة</td>
+                                            <td style="text-align:right;">إجمالي الضريبة</td>
                                             <td style="text-align:right;"><span t-esc="doc.amount_tax"/></td>
                                         </tr>
-                                        <tr style=" font-weight:bold;">
-                                            <td>الإجمالي الكلي</td>
+                                        <tr style=" text-align:right; font-weight:bold;">
+                                            <td  style="text-align:right;">الإجمالي الكلي</td>
                                             <td style="text-align:right; background-color:#ecf0f1;"><span t-esc="doc.amount_total"/></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+
+                    <div style="margin-top:80px; width:100%;">
+                        <!-- الخط الفاصل -->
+                        <hr style="border: 1px solid #000; margin-bottom:10px;"/>
+
+                        <!-- الفوتر -->
+                        <footer>
+                            <h5 style="text-align:center; margin-top:10px;">
+                                <p style="text-align:center;">  .شكراً لأختياركم شركة طلبات المستقبل ،ونسعد دائما بخدمتكم </p>
+                            </h5>
+                        </footer>
+                    </div>
+
+
 
                         </div>
                     </t>
