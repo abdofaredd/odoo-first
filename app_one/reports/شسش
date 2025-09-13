@@ -1,0 +1,154 @@
+<!-- <odoo>
+    <record id="action_report_saleorder_line_custom" model="ir.actions.report">
+        <field name="name">Sale Order Line Report</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="report_name">app_one.report_saleorder_line_document</field>
+        <field name="report_file">app_one.report_saleorder_line_document</field>
+    </record>
+
+    <template id="report_saleorder_line_document">
+        <!-- <t t-call="web.html_container"> -->
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="doc">
+                <!-- <t t-call="web.basic_layout"> -->
+                <!-- <t t-call="web.external_layout"> -->
+                    <div class="page">
+                        <h2>Sale Order: <span t-field="doc.name"/></h2>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.order_line" t-as="l">
+                                    <tr>
+                                        <!-- product name + extra info -->
+                                        <td>
+                                            <span t-field="l.extera_Info"/>
+                                            
+                                        </td>
+                                        <td><span t-field="l.product_uom_qty"/></td>
+                                        <td><span t-field="l.price_unit"/></td>
+                                        <td><span t-field="l.price_subtotal"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo> -->
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Action report -->
+        <record id="action_report_saleorder_line_custom_extra" model="ir.actions.report">
+            <field name="name">تقرير سطور طلب المبيعات (Extra Info)</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_type">report</field>
+            <field name="report_name">app_one.report_saleorder_line_document</field>
+        </record>
+
+        <!-- QWeb template -->
+        <template id="report_saleorder_line_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page" style="direction: rtl; font-family: DejaVu Sans, Arial, sans-serif;">
+                            <h2 style="text-align:center; margin:20px 0; color:#2c3e50;">فاتورة / عرض سعر</h2>
+
+                            <div style="text-align:right; margin-bottom:8px;">
+                                <strong>العميل:</strong> <span t-field="doc.partner_id"/>
+                                &#160;&#160;
+                                <strong>التاريخ:</strong> <span t-field="doc.date_order"/>
+                            </div>
+
+                            <table class="table table-sm o_main_table" style="width:100%; border-collapse:collapse; font-size:13px; direction:rtl;">
+                                <thead>
+                                    <tr style="background:#34495e; color:#fff;">
+                                        <th style="padding:8px; border:1px solid #c8d1d6;">معلومة إضافية</th>
+                                        <th style="padding:8px; border:1px solid #c8d1d6;">الوصف</th>
+                                        <th style="padding:8px; border:1px solid #c8d1d6;">الكمية</th>
+                                        <th style="padding:8px; border:1px solid #c8d1d6;">سعر الوحدة</th>
+                                        <th style="padding:8px; border:1px solid #c8d1d6;">الخصم</th>
+                                        <th style="padding:8px; border:1px solid #c8d1d6;">الإجمالي قبل الضريبة</th>
+                                        <th style="padding:8px; border:1px solid #c8d1d6;">الإجمالي</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.order_line" t-as="l">
+                                        <tr style="background:#fff;">
+                                            <td style="padding:6px; border:1px solid #e1e6e9; text-align:right;"><span t-field="l.extera_Info"/></td>
+                                            <td style="padding:6px; border:1px solid #e1e6e9; text-align:right;"><span t-field="l.name"/></td>
+                                            <td style="padding:6px; border:1px solid #e1e6e9; text-align:center;"><span t-field="l.product_uom_qty"/></td>
+                                            <td style="padding:6px; border:1px solid #e1e6e9; text-align:right;"><span t-field="l.price_unit"/></td>
+                                            <td style="padding:6px; border:1px solid #e1e6e9; text-align:center;"><t t-esc="l.discount"/>%</td>
+                                            <td style="padding:6px; border:1px solid #e1e6e9; text-align:right;"><t t-esc="l.price_subtotal"/></td>
+                                            <td style="padding:6px; border:1px solid #e1e6e9; text-align:right;"><span t-field="l.price_total"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <table style="width:40%; float:right; border-collapse:collapse; margin-top:20px; direction:rtl;">
+                                <tbody>
+                                    <tr>
+                                        <td style="padding:6px; border:1px solid #bfc9cf; background:#ecf0f1;">الإجمالي بدون ضريبة</td>
+                                        <td style="padding:6px; border:1px solid #bfc9cf; text-align:right;"><span t-field="doc.amount_untaxed"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:6px; border:1px solid #bfc9cf; background:#ecf0f1;">إجمالي الضريبة</td>
+                                        <td style="padding:6px; border:1px solid #bfc9cf; text-align:right;"><span t-field="doc.amount_tax"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:6px; border:1px solid #bdc3c7; background:#bdc3c7; font-weight:bold;">الإجمالي الكلي</td>
+                                        <td style="padding:6px; border:1px solid #bdc3c7; text-align:right; font-weight:bold;"><span t-field="doc.amount_total"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+                <table style="width:100%; font-size:13px;">
+                                <thead style="background-color:#34495e; color:#fff;">
+                                    <tr>
+                                        <th>اسم المنتج</th>
+                                        <th>الكمية</th>
+                                        <th>سعر الوحدة</th>
+                                        <th>الضريبة</th>
+                                        <th>الإجمالي قبل الضريبة</th>
+                                        <th> اجمالي الضريبة</th>
+                                        <th>الإجمالي</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.order_line" t-as="l">
+                                        <tr>
+                                            <td><span t-field="l.extera_Info"/></td>
+                                            <td><span t-field="l.product_uom_qty"/></td>
+                                            <td><span t-field="l.price_unit"/></td>
+                                            <td><span t-field="l.tax_id"/></td>
+                                            <td><span t-esc="l.price_total - l.price_subtotal"/></td>
+                                            <td><span t-esc="l.price_subtotal"/></td>
+                                            <td><span t-field="l.price_total"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+

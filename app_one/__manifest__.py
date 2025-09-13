@@ -7,6 +7,7 @@
     'Version':'17.0.0.1.0',
     'depends':['base','sale_management','account', 'mail','contacts'],
     'data':[
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'views/base_menu.xml',
@@ -17,8 +18,10 @@
         'views/res_partner_view.xml',
         'views/building_view.xml',
         'views/property_history_view.xml',
+        'views/sale_order_line.xml',
         'wizard/change_state_wizard.xml',
-        'reports/property_report.xml'
+        'reports/property_report.xml',
+        'reports/sale_order_line_report.xml',
     ],
     'assets':{
         'web.assets_backend':['app_one/static/src/css/property.css']

@@ -6,8 +6,6 @@ class Property(models.Model):
     _name='property'
     _description='Property '
     _inherit=['mail.thread','mail.activity.mixin']
-
-
     name= fields.Char(required=True)
     ref= fields.Char(default='New',readonly=1)
     description= fields.Text(tracking=1)
@@ -35,8 +33,6 @@ class Property(models.Model):
     owner_id=fields.Many2one('owner')
     tag_ids=fields.Many2many('tag')
     line_ids=fields.One2many('property.line','property_id')
-
-
     owner_phone=fields.Char(related='owner_id.phone',readonly=0)
     owner_adress=fields.Char(related='owner_id.address',readonly=0)
     active=fields.Boolean(default=True)
@@ -53,6 +49,8 @@ class Property(models.Model):
     _sql_constraints =[
         ('unique_name','unique(name)','Name must be unique'),
     ]
+
+
     # @api.depends('expected_price','selling_price')
     # def _compute_diff_to(self):
     #     for rec in self:
@@ -60,6 +58,7 @@ class Property(models.Model):
 
     # @api.onchange()
     
+
     @api.depends('create_time')
     def _compute_next_time(self):
         for rec in self:
@@ -74,17 +73,20 @@ class Property(models.Model):
      for record in self:
         if record.bedrooms == 0:
             raise ValidationError("Bedrooms must be greater than 0")
+
     # @api.model_create_multi
     # def create( self , vals ):
     #     res=super( Property , self ).create( vals )
     #     # res=super().create(Self,vals) 
     #     print('inside create method')
     #     return res
+
     # @api.model
     # def _search(self, domain, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
     #     res=super( Property , self )._search( domain, offset=0, limit=None, order=None, count=False, access_rights_uid=None )
     #     print('inside search method')
     #     return res
+
     @api.model
     def _search(self, domain, offset=0, limit=None, order=None,  access_rights_uid=None):
         res=super( Property , self )._search( domain, offset=0, limit=None, order=None,  access_rights_uid=None )
@@ -126,6 +128,7 @@ class Property(models.Model):
             rec.is_late=True
         else:
             rec.is_late=False
+
     @api.depends('expected_price','selling_price','owner_id.phone')
     def _compute_diff(self):
         for rec in self:
