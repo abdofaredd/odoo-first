@@ -144,7 +144,15 @@ class Property(models.Model):
 
 
     def action(self):
-        print('dada')
+        print(self.env['property'].search([]))
+
+    def action_open_related_owner(self):
+        action= self.env['ir.actions.actions']._for_xml_id('app_one.owner_action')
+        view_id=self.env.ref('app_one.owner_view_form').id
+        action['res_id']=self.owner_id.id
+        action['views']=[[view_id,'form']]
+        return action
+       
 
     @api.model
     def create(self,vals):
@@ -153,13 +161,7 @@ class Property(models.Model):
             res.ref = self.env['ir.sequence'].next_by_code('property_seq')
         return res    
 
-    # @api.model
-    # def create(self, vals):
-    #     res = super(Property, self).create(vals)
-    #     if res.ref == 'NEW':
-    #         res.ref = self.env['ir.sequence'].next_by_code('property_seq')
-    #     return res
-
+  
 
     def property_history_record(self , old_state , new_state ,reason=""):
         for rec in self:
