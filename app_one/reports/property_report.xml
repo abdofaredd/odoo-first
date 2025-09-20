@@ -11,7 +11,7 @@
 <template id="property_report_template"  >
     <t t-call='web.html_container'>
    <t t-foreach='docs' t-as='o'>
-   <h1 style="text-align:center; font-size:22px;"> property Report</h1>
+   <h1 style="text-align:center; font-size:22px; "> property Report</h1>
     <style>
                         .property-table {
                             width: 100%;
@@ -33,12 +33,14 @@
                             background-color: #f9f9f9;
                         }
                     </style>
+   <h3 style="font-family:'Workbench' "> property Report</h3>
+
    <table class="property-table" style="text-align:center; font-size:22px;">
         <thead>
         <th colspan="4" style="text-align:center; font-size:22px;">General Information</th>
         </thead>
         <tbody>
-            <td>Property Name</td>
+            <td style="font-family:'Workbench'">Property Name</td>
             <td><t t-esc="o.name"/></td>
             <td>Property postcode</td>
             <td><t t-esc="o.postcode"/></td>

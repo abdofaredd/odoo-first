@@ -24,9 +24,15 @@
         'reports/property_report.xml',
         'reports/sale_order_line_report.xml',
     ],
-    'assets':{
-        'web.assets_backend':['app_one/static/src/css/property.css']
+    'assets': {
+        'web.assets_backend': [
+            'app_one/static/src/css/property.css',
+        ],
+        'web.report_assets_common': [
+            'app_one/static/src/css/font.css',
+        ],
     },
+
     'application':'true'
     }
 

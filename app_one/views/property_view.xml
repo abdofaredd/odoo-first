@@ -63,7 +63,7 @@
                             <field name="ref"/>
                     </h1>
                     <lable for='name' />
-                    <h3>
+                    <h3 >
                             <field name="name" readonly="status=='closed'"/>
                     </h3>
                 </div>
