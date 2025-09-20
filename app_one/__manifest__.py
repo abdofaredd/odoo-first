@@ -4,7 +4,7 @@
     'name': 'App One',
     'author': 'abdo fared',
     'category':'',
-    'Version':'17.0.0.1.0',
+    'version':'17.0.0.1.0',
     'depends':['base','sale_management','account', 'mail','contacts'],
     'data':[
         'security/security.xml',
@@ -19,6 +19,7 @@
         'views/building_view.xml',
         'views/property_history_view.xml',
         'views/sale_order_line.xml',
+        'views/account_move_view.xml',
         'wizard/change_state_wizard.xml',
         'reports/property_report.xml',
         'reports/sale_order_line_report.xml',
