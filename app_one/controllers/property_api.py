@@ -56,3 +56,27 @@ class propertyApi(http.Controller):
                 "message":"property has been created"
             }
         ]
+
+
+    @http.route("/v1/property/<int:property_id>", methods=['PUT'], type='http', auth='none', csrf=False)
+    def update_property(self, property_id):
+        try:
+            property_id = request.env["property"].sudo().search([('id', '=', property_id)], limit=1)
+            if not property_id:
+                return request.make_json_response({"error": "ID Does Not Exist"}, status=404)
+
+            args = request.httprequest.data.decode()
+            vals = json.loads(args)
+            property_id.write(vals)
+
+            return request.make_json_response({
+                "message": "Property updated successfully",
+                "id": property_id.id,
+                "name": property_id.name
+            }, status=200)
+
+        except Exception as error:
+            return request.make_json_response({
+                "message":error
+
+            },status=400)
