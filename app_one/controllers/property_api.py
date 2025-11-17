@@ -137,9 +137,10 @@ class propertyApi(http.Controller):
         try:
             params= parse_qs(request.httprequest.query_string.decode('utf-8'))
             property_domain=[]
-            if params.get('state'):
-                property_domain += [('state' ,'=', params.get('state')[0])]
-            property_ids = request.env["property"].sudo().search([property_domain])
+            if params.get('status'):
+                property_domain += [('status' ,'=', params.get('status')[0])]
+            property_ids = request.env["property"].sudo().search(property_domain)
+
             if not property_ids:
                 return request.make_json_response({ 
                     "error": "there are not records"
