@@ -1,7 +1,7 @@
 from odoo import http
 from odoo.http import request
 import json
-
+from urllib.parse import parse_qs
 
 
 class propertyApi(http.Controller):
@@ -74,9 +74,93 @@ class propertyApi(http.Controller):
                 "id": property_id.id,
                 "name": property_id.name
             }, status=200)
+        except Exception as error:
+            return request.make_json_response({
+                "message":error
+            },status=400)
+
+    @http.route("/v1/property/<int:property_id>", methods=['GET'], type='http', auth='none', csrf=False)
+    def get_property(self, property_id):
+        try:
+            property_id = request.env["property"].sudo().search([('id', '=', property_id)], limit=1)
+            if not property_id:
+                return request.make_json_response({"error": "ID Does Not Exist"}, status=404)
+
+            # args = request.httprequest.data.decode()
+            # vals = json.loads(args)
+            # property_id.write(vals)
+
+            return request.make_json_response({
+                "message": "Property updated successfully",
+                "id": property_id.id,
+                "name": property_id.name,
+                "description": property_id.description,
+                "postcode": property_id.postcode,
+                "expected_price": property_id.expected_price,
+            }, status=200)
 
         except Exception as error:
             return request.make_json_response({
                 "message":error
 
             },status=400)
+    
+
+    @http.route("/v1/property/<int:property_id>",method=['DELETE'],type='http',auth="none",csrf=False)
+    def delete_property(self,property_id):
+        try:
+            property_id = request.env["property"].sudo().search([('id', '=', property_id)])
+
+
+            if not property_id:
+                 return request.make_json_response({
+                    "error": "ID Does Not Exist"
+                    }, status=404) 
+            property_id.unlink()
+            return request.make_json_response({
+                "message": "Property has been deleted successfully",
+                
+            }, status=200)
+
+
+
+
+        except Exception as error:
+            return request.make_json_response({
+                "message":error
+
+            },status=400)
+    
+
+    @http.route("/v1/properties", methods=['GET'], type='http', auth='none', csrf=False)
+    def get_property_list(self):
+        try:
+            params= parse_qs(request.httprequest.query_string.decode('utf-8'))
+            property_domain=[]
+            if params.get('state'):
+                property_domain += [('state' ,'=', params.get('state')[0])]
+            property_ids = request.env["property"].sudo().search([])
+            if not property_ids:
+                return request.make_json_response({ 
+                    "error": "there are not records"
+                    }, status=404)
+
+            # args = request.httprequest.data.decode()
+            # vals = json.loads(args)
+            # property_id.write(vals)
+
+            return request.make_json_response([{
+                "message": "Property updated successfully",
+                "id": property_id.id,
+                "name": property_id.name,
+                "description": property_id.description,
+                "postcode": property_id.postcode,
+                "expected_price": property_id.expected_price,
+            } for property_id in property_ids], status=200)
+
+        except Exception as error:
+            return request.make_json_response({
+                "message":error
+
+            },status=400)
+    
