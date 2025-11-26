@@ -4,6 +4,21 @@ import json
 from urllib.parse import parse_qs
 
 
+
+def valid_response(data,status):
+   response_body= {
+    'data':data
+   }
+   return request.make_json_response(response_body,status=status) 
+
+def invalid_response(error,status):
+   response_body= {
+    'error':error
+   }
+   return request.make_json_response(response_body,status=status) 
+
+
+
 class propertyApi(http.Controller):
 
     @http.route("/v1/property",methods=["POST"],type="http",auth="none",csrf=False)
@@ -84,13 +99,13 @@ class propertyApi(http.Controller):
         try:
             property_id = request.env["property"].sudo().search([('id', '=', property_id)], limit=1)
             if not property_id:
-                return request.make_json_response({"error": "ID Does Not Exist"}, status=404)
+                return invalid_response( "ID Does Not Exist", status=404)
 
             # args = request.httprequest.data.decode()
             # vals = json.loads(args)
             # property_id.write(vals)
 
-            return request.make_json_response({
+            return valid_response({
                 "message": "Property updated successfully",
                 "id": property_id.id,
                 "name": property_id.name,
@@ -150,7 +165,7 @@ class propertyApi(http.Controller):
             # vals = json.loads(args)
             # property_id.write(vals)
 
-            return request.make_json_response([{
+            return valid_response([{
                 "message": "Property updated successfully",
                 "id": property_id.id,
                 "name": property_id.name,
