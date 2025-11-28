@@ -2,20 +2,27 @@ from odoo import http
 from odoo.http import request
 import json
 from urllib.parse import parse_qs
+import math
 
 
 
-def valid_response(data,status):
+def valid_response(data,status,pagination_info):
    response_body= {
     'data':data
    }
-   return request.make_json_response(response_body,status=status) 
+   if pagination_info:
+    response_body['pagination_info']=pagination_info 
+
+   return request.make_json_response(response_body,status=status)  
 
 def invalid_response(error,status):
    response_body= {
     'error':error
    }
    return request.make_json_response(response_body,status=status) 
+
+
+
 
 
 
@@ -121,7 +128,7 @@ class propertyApi(http.Controller):
             },status=400)
     
 
-    @http.route("/v1/property/<int:property_id>",method=['DELETE'],type='http',auth="none",csrf=False)
+    @http.route("/v1/property/<int:property_id>",methods=['DELETE'],type='http',auth="none",csrf=False)
     def delete_property(self,property_id):
         try:
             property_id = request.env["property"].sudo().search([('id', '=', property_id)])
@@ -152,12 +159,25 @@ class propertyApi(http.Controller):
         try:
             params= parse_qs(request.httprequest.query_string.decode('utf-8'))
             property_domain=[]
+
+            offset = page = None
+            limit = 5 
+            if params.get('limit'):
+                limit = int(params.get('limit')[0])
+
+            if params.get('page'):
+                page = int(params.get('page')[0])
+
+
+            if page:
+                offset=(page * limit) - limit
             if params.get('status'):
                 property_domain += [('status' ,'=', params.get('status')[0])]
-            property_ids = request.env["property"].sudo().search(property_domain)
+            property_ids = request.env["property"].sudo().search(property_domain ,offset=offset,limit=limit,order='id Desc')
+            property_count = request.env["property"].sudo().search_count(property_domain)
 
             if not property_ids:
-                return request.make_json_response({ 
+                return invalid_response({ 
                     "error": "there are not records"
                     }, status=404)
 
@@ -166,13 +186,19 @@ class propertyApi(http.Controller):
             # property_id.write(vals)
 
             return valid_response([{
-                "message": "Property updated successfully",
+                "message": "Property fetched successfully",
                 "id": property_id.id,
                 "name": property_id.name,
                 "description": property_id.description,
                 "postcode": property_id.postcode,
                 "expected_price": property_id.expected_price,
-            } for property_id in property_ids], status=200)
+            } for property_id in property_ids],pagination_info={
+                "page": page if page else 1,
+                "limit":limit,
+                "pages":math.ceil(property_count / limit) if limit else 1,
+                "count":property_count,
+
+            }, status=200)
 
         except Exception as error:
             return request.make_json_response({
