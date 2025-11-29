@@ -30,35 +30,30 @@ class propertyApi(http.Controller):
 
     @http.route("/v1/property",methods=["POST"],type="http",auth="none",csrf=False)
 
-    
     def post_property(self):
-    #    args =  request.httprequest.data.decode()
-    #    vals = json.loads(args)
-    #    res  = request.env['property'].create(vals)
-
-
-      args = request.httprequest.data.decode()
+      args =  request.httprequest.data.decode()
       vals = json.loads(args)
+    #   res  = request.env['property'].create(vals)
 
       if not vals.get('name'):
             return request.make_json_response({
-                            "message": "name is required",
-                            
-                        }, status=400)
-
-
+                "message": "name is required",
+            }, status=400)
       try:
-        res = request.env['property'].sudo().create(vals)
+        # res = request.env['property'].sudo().create(vals)
+        cr =request.env.cr
+        colums=', '.join(vals.keys())
+        values=', '.join(['%s']* len(vals))  
+        query= f"""INSERT INTO property  ({colums}) VALUES ({values})  RETURNING id , name ,postcode"""
+        cr.execute(query,tuple(vals.values()))
+        res=cr.fetchone()
         if res:
             return request.make_json_response({
                 "message": "property record has been created successfully",
-                "id": res.id,
-                "name": res.name
+                "id": res[0],
+                "name": res[1],
+                "postcode": res[2],
             }, status=201)
-        # else:
-        #     return request.make_json_response({
-        #         "message": "Failed to create property"
-        #     }, status=400)
       except Exception as error:
         return request.make_json_response({
             "message":error
