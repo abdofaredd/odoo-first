@@ -1,10 +1,16 @@
 <!-- <?xml version="1.0" encoding="utf-8"?> -->
 <odoo>
 <record id="property_tree_view" model="ir.ui.view">
+
+
+
     <field name="name">property tree</field>
     <field name="model">property</field>
     <field name="arch" type='xml'>
     <tree multi_edit='1' class="header_custom"  decoration-danger="is_late">
+    <header>
+<button name='property_xlsx_report' type='object' string='Print Excel Report' class='btn-primary' />
+</header>
     <field name="name"/>
     <field name="is_late" invisible="1"/>
     <field name="owner_id"/>

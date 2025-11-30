@@ -181,6 +181,15 @@ class Property(models.Model):
         action['context']={'default_property_id':self.id}
         return action
 
+
+    def property_xlsx_report(self):
+        return {
+            'type':'ir.actions.act_url',
+            'url':f'/property/excel/report/{self.env.context.get("active_ids")}',
+            'target':'new'
+        }
+
+
 class PropertyLine(models.Model):
     _name='property.line'
 
