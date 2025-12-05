@@ -32,6 +32,36 @@ export class ListViewAction extends Component {
             console.error("Failed to load properties:", error);
         }
     }
+
+    async createRecord(){
+        await this.rpc("/web/dataset/call_kw/",{
+                    model: "property",
+                    method: "create",
+                    args:[{
+                        name:"pccodds",
+                        postcode:'4564',
+                        date_availability:"2025-05-06"
+                    }],
+                    kwargs: {},
+                });
+
+        this.loadRecords();
+        
+    }
+    async deleteRecord(recordId){
+        await this.rpc("/web/dataset/call_kw/",{
+                    model: "property",
+                    method: "unlink",
+                    args:[recordId],
+                    kwargs: {},
+                });
+
+        this.loadRecords();
+        
+    }
+
+
+
     // async loadRecords() {
     //     try {
     //         const records = await this.orm.searchRead(
