@@ -3,19 +3,23 @@
 import { Component, useState ,onWillUnmount} from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";   
+import { FormView } from "@app_one/components/formView/formview";
 
 export class ListViewAction extends Component {
     static template = "app_one.ListView";
+    static components = {FormView}
 
     setup() {
         this.state = useState({
-            records: []
+            records: [],
+            showCreateForm: false
         });
         this.orm = useService("orm");   
         this.rpc = useService("rpc");   
 
         this.loadRecords();
         this.IntervalId= setInterval(()=>{ this.loadRecords() },3000);
+        this.onRecordCreated=this.onRecordCreated.bind(this);
         onWillUnmount (()=>{clearInterval( this.IntervalId)})
     }
 
@@ -62,6 +66,18 @@ export class ListViewAction extends Component {
 
 
 
+
+    toggleCreateRecord(){
+        console.log(this.state.showCreateForm) ; 
+        this.state.showCreateForm =!this.state.showCreateForm;
+        console.log(this.state.showCreateForm) ; 
+
+
+    }
+    onRecordCreated(){
+        this.loadRecords();
+        this.state.showCreateForm = false;
+    }
     // async loadRecords() {
     //     try {
     //         const records = await this.orm.searchRead(

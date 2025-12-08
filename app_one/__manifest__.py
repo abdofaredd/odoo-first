@@ -34,7 +34,7 @@
             'app_one/static/src/components/listView/listView.css',
             'app_one/static/src/components/formView/formview.xml',
             'app_one/static/src/components/formView/formview.js',
-            'app_one/static/src/components/formView/formview.css',
+            # 'app_one/static/src/components/formView/formview.css',
         ],
     },
 

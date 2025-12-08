@@ -3,8 +3,13 @@
     <t t-name="app_one.ListView">
 
         <h1>Properties List</h1>
-        <button class="btn btn-primary m-1 p-1" t-on-click="createRecord">Create Record</button>
-
+        <button class="btn btn-primary m-1 p-1" t-on-click="toggleCreateRecord">
+        <t t-if="!state.showCreateForm">New</t>
+        <t t-else="">Close</t>
+        </button> 
+        <t t-if="state.showCreateForm">
+          <FormView onRecordCreated="onRecordCreated"  onCancel.bind="toggleCreateRecord.bind(this)"/>  
+        </t>
         <div class="o_list_view table_responsive">
         <table class="o_list_table table table-sm table-hover table-striped">
             <thead>
